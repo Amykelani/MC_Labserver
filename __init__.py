@@ -2,7 +2,6 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
-# todo update username and password for db
 db = SQLAlchemy()
 
 
@@ -10,6 +9,9 @@ def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
     db.init_app(app)
+
+    with app.app_context():
+        db.Model.metadata.reflect(db.engine)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -29,7 +31,5 @@ def create_app():
 
     from .robots_api import robots_api
     app.register_blueprint(robots_api, url_prefix='/api')
-
-
 
     return app
