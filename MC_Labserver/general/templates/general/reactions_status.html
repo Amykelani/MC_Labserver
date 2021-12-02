@@ -1,0 +1,50 @@
+{% extends 'general/structure.html' %}
+{% block insert1 %}
+<script>
+    var nav = document.getElementById("nav3");
+    nav.className = "active-nav";
+</script>
+    {% if num_pages == 0 %}
+        <h1>No reaction data to display</h1>
+    {% endif %}
+    {% if num_pages > 0 %}
+        <h1>Current reactions status</h1>
+        <table>
+            <tr class="table-headers">
+                <th>Reaction ID</th>
+                <th>Robot Name</th>
+                <th>Reaction Name</th>
+                <th>Reaction Status</th>
+                <th>Last update</th>
+                <th>Job completion date</th>
+            </tr>
+            {% for item in reactions_data %}
+            <tr>
+                <td>{{item[0]}}</td>
+                <td>{{item[2]}}</td>
+                <td>{{item[3]}}</td>
+                <td>{{item[4]}}</td>
+                <td>{{item[6]}}</td>
+                <td>{{item[7]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div id="page-count">
+            Pages:
+            {% for i in range(0, num_pages) %}
+                <a href="{{url_for('general.reactions', page_nr=i, results_per_page=results_per_page)}}">{{i+1}}</a>
+            {% endfor %}
+        </div>
+        <div>
+            Results per page:
+            <a href="{{url_for('general.reactions', results_per_page=40)}}">40</a>
+            <a href="{{url_for('general.reactions', results_per_page=100)}}">100</a>
+            <a href="{{url_for('general.reactions', results_per_page=150)}}">150</a>
+        </div>
+        <h3>Current page: {{cur_page + 1}}</h3>
+    {% endif %}
+    <div id="reaction-options">
+        <a href="{{url_for('general.add_reaction')}}">Add a new reaction class</a>
+        <a href="{{url_for('general.queue_reaction')}}">Queue a reaction</a>
+    </div>
+{% endblock insert1 %}
